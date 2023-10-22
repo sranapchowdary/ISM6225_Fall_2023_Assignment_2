@@ -112,15 +112,37 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                List<IList<int>> result = new List<IList<int>>();
+                long prev = (long)lower - 1;
+
+                foreach (int num in nums)
+                {
+                    if ((long)num - prev >= 2)
+                    {
+                        result.Add(GetRange(prev + 1, (long)num - 1));
+                    }
+                    prev = num;
+                }
+
+                if (prev < upper)
+                {
+                    result.Add(GetRange(prev + 1, (long)upper));
+                }
+
+                return result;
             }
             catch (Exception)
             {
                 throw;
             }
-
         }
+
+        static IList<int> GetRange(long start, long end)
+        {
+            return start == end ? new List<int> { (int)start } : new List<int> { (int)start, (int)end };
+        }
+
+
 
         /*
          
@@ -156,14 +178,46 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return s.Length == 0;
+                Stack<char> stack = new Stack<char>();
+
+                foreach (char c in s)
+                {
+                    if (c == '(' || c == '[' || c == '{')
+                    {
+                        stack.Push(c);
+                    }
+                    else
+                    {
+                        if (stack.Count == 0)
+                        {
+                            return false; // No matching opening bracket found
+                        }
+
+                        char openBracket = stack.Pop();
+
+                        if (c == ')' && openBracket != '(')
+                        {
+                            return false;
+                        }
+                        else if (c == ']' && openBracket != '[')
+                        {
+                            return false;
+                        }
+                        else if (c == '}' && openBracket != '{')
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return stack.Count == 0; // All open brackets are matched and closed
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
 
@@ -191,14 +245,29 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 1;
+                int minPrice = int.MaxValue;
+                int maxProfit = 0;
+
+                for (int i = 0; i < prices.Length; i++)
+                {
+                    if (prices[i] < minPrice)
+                    {
+                        minPrice = prices[i];
+                    }
+                    else if (prices[i] - minPrice > maxProfit)
+                    {
+                        maxProfit = prices[i] - minPrice;
+                    }
+                }
+
+                return maxProfit;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
         
@@ -229,14 +298,33 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return false;
+                int left = 0;
+                int right = s.Length - 1;
+
+                while (left <= right)
+                {
+                    if (!IsStrobogrammaticPair(s[left], s[right]))
+                    {
+                        return false;
+                    }
+
+                    left++;
+                    right--;
+                }
+
+                return true;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
+        public static bool IsStrobogrammaticPair(char a, char b)
+        {
+            return (a == '0' && b == '0') || (a == '1' && b == '1') || (a == '8' && b == '8') || (a == '6' && b == '9') || (a == '9' && b == '6');
+        }
+
 
         /*
 
@@ -271,14 +359,30 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                Dictionary<int, int> count = new Dictionary<int, int>();
+                int result = 0;
+
+                foreach (int num in nums)
+                {
+                    if (count.ContainsKey(num))
+                    {
+                        result += count[num];
+                        count[num]++;
+                    }
+                    else
+                    {
+                        count[num] = 1;
+                    }
+                }
+
+                return result;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
         Question 6
@@ -321,14 +425,40 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                long firstMax = long.MinValue;
+                long secondMax = long.MinValue;
+                long thirdMax = long.MinValue;
+
+                foreach (int num in nums)
+                {
+                    if (num == firstMax || num == secondMax || num == thirdMax)
+                        continue;
+
+                    if (num > firstMax)
+                    {
+                        thirdMax = secondMax;
+                        secondMax = firstMax;
+                        firstMax = num;
+                    }
+                    else if (num > secondMax)
+                    {
+                        thirdMax = secondMax;
+                        secondMax = num;
+                    }
+                    else if (num > thirdMax)
+                    {
+                        thirdMax = num;
+                    }
+                }
+
+                return (thirdMax != long.MinValue) ? (int)thirdMax : (int)firstMax;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
         
@@ -354,14 +484,42 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<string>() { };
+                List<string> possibleMoves = new List<string>();
+
+                for (int i = 0; i < currentState.Length - 1; i++)
+                {
+                    if (currentState[i] == '+' && currentState[i + 1] == '+')
+                    {
+                        StringBuilder nextState = new StringBuilder(currentState);
+                        nextState[i] = '-';
+                        nextState[i + 1] = '-';
+                        possibleMoves.Add(nextState.ToString());
+                    }
+                }
+
+                return possibleMoves;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
+        public static string ConvertArrayToString(string[] array)
+        {
+            StringBuilder builder = new StringBuilder("[");
+            for (int i = 0; i < array.Length; i++)
+            {
+                builder.Append(array[i]);
+                if (i < array.Length - 1)
+                {
+                    builder.Append(", ");
+                }
+            }
+            builder.Append("]");
+            return builder.ToString();
+        }
+
 
         /*
 
@@ -383,9 +541,20 @@ namespace ISM6225_Fall_2023_Assignment_2
 
         public static string RemoveVowels(string s)
         {
-            // Write your code here and you can modify the return value according to the requirements
-            return "";
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c != 'a' && c != 'e' && c != 'i' && c != 'o' && c != 'u')
+                {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();
         }
+
 
         /* Inbuilt Functions - Don't Change the below functions */
         static string ConvertIListToNestedList(IList<IList<int>> input)
